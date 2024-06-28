@@ -1,0 +1,22 @@
+{
+    "kir2dl1": [
+        {"ligand":"hla_c_c2", "affinity":1.0}
+    ],
+    "kir2dl2": [
+        {"ligand":"hla_c_c1", "affinity":1.0}, 
+        {"ligand":"hla_b_46_c1", "affinity":1.0}, 
+        {"ligand":"hla_b_73_c1", "affinity":1.0}, 
+        {"ligand":"hla_c_c2", "affinity":0.5}
+    ],
+    "kir2dl3": [
+        {"ligand":"hla_c_c1", "affinity":0.75}, 
+        {"ligand":"hla_b_46_c1", "affinity":0.75}, 
+        {"ligand":"hla_b_73_c1", "affinity":0.75}
+    ],
+    "kir3dl1": [
+        {"ligand":"hla_b_bw4", "affinity":1.0}, 
+        {"ligand":"hla_a_23_bw4", "affinity":1.0}, 
+        {"ligand":"hla_a_24_bw4", "affinity":1.0}, 
+        {"ligand":"hla_a_32_bw4", "affinity":1.0}
+    ]
+}

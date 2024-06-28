@@ -1,0 +1,9 @@
+name: pandas_env
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas>=2.0
+  - requests>=2.27
+  - pyarrow

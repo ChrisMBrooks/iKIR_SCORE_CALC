@@ -1,0 +1,10 @@
+{
+    "hla_c_c1":{"gene":"C", "motif":"c1"}, 
+    "hla_c_c2":{"gene":"C", "motif":"c2"}, 
+    "hla_b_46_c1":{"gene":"B*46", "motif":"c1"}, 
+    "hla_b_73_c1":{"gene":"B*73", "motif":"c1"}, 
+    "hla_b_bw4":{"gene":"B", "motif":"bw4"}, 
+    "hla_a_23_bw4":{"gene":"A*23", "motif":"bw4"},
+    "hla_a_24_bw4":{"gene":"A*24", "motif":"bw4"},
+    "hla_a_32_bw4":{"gene":"A*32", "motif":"bw4"}
+}

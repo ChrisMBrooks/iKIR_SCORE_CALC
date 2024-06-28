@@ -1,0 +1,6 @@
+.vscode
+.snakemake
+.Output
+pipeline.config.json
+.DS_Store
+**/__pycache__/

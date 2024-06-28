@@ -1,0 +1,36 @@
+{
+    "project":"YOUR_PROJECT_NAME",
+    "hla_allele_calling":{
+        "raw_input_filenames":[
+            "path/to/hla/imputations.csv"
+        ],
+        "source":"hla*imp"
+    },
+    "kir_genotype_calling":{
+        "raw_input_filenames":[
+            "path/to/kir/imputations.csv"
+        ],
+        "source":"kir*imp"
+    },
+    "rule_config":{
+        "t1k_calling":{
+            "name":"T1K",
+            "p_val_quality_threshold":0.1,
+            "tech_rep_quality_threshold":0.5
+        },
+        "optitype_calling":{
+            "name":"optitype",
+            "quality_threshold":0.5
+        },
+        "kir_imp_calling":{
+            "name":"kir*imp",
+            "quality_threshold":0.5
+
+        },
+        "hla_imp_calling":{
+            "name":"hla*imp",
+            "quality_threshold":0.5
+        }
+    }
+
+}

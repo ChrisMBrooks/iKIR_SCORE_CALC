@@ -64,9 +64,20 @@ def load_json(filename:str) -> dict:
         payload = json.loads(raw_text)
     return payload
 
+def import_tabular_file(filename:str, index_col:int = None) -> pd.DataFrame:
+    file_extension = filename.split(".")[-1]
+    if file_extension == "parquet":
+        frame = pd.read_parquet(filename)
+        return frame
+    elif file_extension == "csv":
+        frame = pd.read_csv(filename, index_col=index_col)
+        return frame
+    else:
+        raise Exception("File type not recognised. Please us parquet or csv.")
+
 def get_pertinent_motif_status(allele_name:str, hla_allele_definitions:pd.DataFrame) -> dict:
-    if allele_name:
-        desired_motifs = ["c1", "c2", "bw4", "bw6"]
+    desired_motifs = ["c1", "c2", "bw4", "bw6"]
+    if allele_name and not pd.isna(allele_name):
         motif_statuses = hla_allele_definitions[hla_allele_definitions["ebi_name"].str.startswith(allele_name)].iloc[0][desired_motifs].to_dict()    
     else:
         motif_statuses = {motif_name:None for motif_name in desired_motifs}
@@ -74,8 +85,8 @@ def get_pertinent_motif_status(allele_name:str, hla_allele_definitions:pd.DataFr
 
 def evaluate_ligand_match_criteria(relevant_alleles:dict, ligand_match_defintion:dict, hla_allele_definitions:pd.DataFrame) -> bool:
     
-    hla_gene_letter = ligand_match_defintion["gene"][0]
-    keys = ["{0}{1}".format(hla_gene_letter, i) for i in [1,2]]
+    hla_gene_letter = ligand_match_defintion["gene"][0].lower()
+    keys = ["{0}_{1}".format(hla_gene_letter, i) for i in [1,2]]
 
     # If no allele information, return None
     if relevant_alleles[keys[0]] is None and relevant_alleles[keys[1]] is None:
@@ -93,7 +104,7 @@ def evaluate_ligand_match_criteria(relevant_alleles:dict, ligand_match_defintion
             required_allele_prefix = ligand_match_defintion["gene"]
             required_motif = ligand_match_defintion["motif"]
 
-            if allele_name.startswith(required_allele_prefix) and allele_definition[required_motif]:
+            if allele_name and not pd.isna(allele_name) and allele_name.startswith(required_allele_prefix) and allele_definition[required_motif]:
                 match_status.append(True)
             else:
                 match_status.append(False)
@@ -251,9 +262,9 @@ def main():
     # Load Data
     kir_ligand_matching_criteria = load_json("ref_data/kir_ligand_matching_criteria.json")
     ligand_matching_criteria = load_json("ref_data/hla_ligand_definitions.json")
-    kir_genotype_calls = pd.read_csv(args["kir_file"], index_col=0)
-    hla_allele_calls = pd.read_csv(args["hla_file"], index_col=0)
-    hla_allele_definitions = pd.read_csv(args["ref_file"], index_col=0)
+    kir_genotype_calls = import_tabular_file(args["kir_file"], index_col=0)
+    hla_allele_calls = import_tabular_file(args["hla_file"], index_col=0)
+    hla_allele_definitions = import_tabular_file(args["ref_file"], index_col=0)
 
     # Agument Data with Reference Data (Compute Motif Posession)
     hla_allele_calls = add_ligand_possession_status(

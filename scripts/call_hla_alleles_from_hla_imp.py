@@ -49,6 +49,17 @@ def parse_arguments() -> dict:
     arguments = vars(parser.parse_args())
     return arguments
 
+def import_tabular_file(filename:str, index_col:int = None) -> pd.DataFrame:
+    file_extension = filename.split(".")[-1]
+    if file_extension == "parquet":
+        frame = pd.read_parquet(filename)
+        return frame
+    elif file_extension == "csv":
+        frame = pd.read_csv(filename, index_col=index_col)
+        return frame
+    else:
+        raise Exception("File type not recognised. Please us parquet or csv.")
+
 def format_hla_shortcode(shortcode:str, gene_letter:str) -> str:
     if len(shortcode) < 4:
         shortcode = "0{0}:{1}".format(shortcode[0], shortcode[1:])
@@ -101,6 +112,8 @@ def compute_frequency_stats(hla_allele_calls:pd.DataFrame) -> pd.DataFrame:
          frequencies[allele_name] = 1 - (1.0-frequencies[allele_name])**2
     
     frequencies = pd.DataFrame([frequencies]).iloc[0].sort_values(ascending=False)
+    frequencies.name = "phenotype_frequency"
+    frequencies.index.name = "hla_allele"
     return frequencies
 
 def format_and_export_results(hla_allele_calls:pd.DataFrame, hla_frequencies:pd.DataFrame, output_filename:str, output_dir:str):
@@ -136,7 +149,7 @@ def main():
     ]
 
     # Load Data
-    raw_hla_imp_results = pd.read_csv(args["input_file"])
+    raw_hla_imp_results = import_tabular_file(args["input_file"])
     columns = ['subject_id', 'subject_id2', 'haplotype_id', 'locus', 'imputed_type', 'posterior_probability']
     raw_hla_imp_results = pd.DataFrame(raw_hla_imp_results.values, columns=columns)
 

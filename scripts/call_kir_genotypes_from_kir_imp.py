@@ -49,6 +49,17 @@ def parse_arguments() -> dict:
     arguments = vars(parser.parse_args())
     return arguments
 
+def import_tabular_file(filename:str, index_col:int = None) -> pd.DataFrame:
+    file_extension = filename.split(".")[-1]
+    if file_extension == "parquet":
+        frame = pd.read_parquet(filename)
+        return frame
+    elif file_extension == "csv":
+        frame = pd.read_csv(filename, index_col=index_col)
+        return frame
+    else:
+        raise Exception("File type not recognised. Please us parquet or csv.")
+
 def call_kir3dl1(kir3dl1ex4:bool, kir3dl1ex9:bool) -> bool:
     if kir3dl1ex4 or kir3dl1ex9:
         return True
@@ -145,7 +156,8 @@ def main():
         "KIR2DL5", "KIR2DS3", "KIR2DS5", "KIR2DS1"
     ]
 
-    raw_kir_imp_results = pd.read_csv(args["input_file"])
+    # Import Raw KIR*IMP Data
+    raw_kir_imp_results = import_tabular_file(args["input_file"])
     columns = ['subject_id', 'subject_id2', 'haplotype_id', 'locus', 'imputed_type', 'posterior_probability']
     raw_kir_imp_results = pd.DataFrame(raw_kir_imp_results.values, columns=columns)
 

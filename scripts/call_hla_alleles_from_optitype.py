@@ -49,6 +49,17 @@ def parse_arguments() -> dict:
     arguments = vars(parser.parse_args())
     return arguments
 
+def import_tabular_file(filename:str, index_col:int = None) -> pd.DataFrame:
+    file_extension = filename.split(".")[-1]
+    if file_extension == "parquet":
+        frame = pd.read_parquet(filename)
+        return frame
+    elif file_extension == "csv":
+        frame = pd.read_csv(filename, index_col=index_col)
+        return frame
+    else:
+        raise Exception("File type not recognised. Please us parquet or csv.")
+
 def find_best_allele(quality_scores:dict, quality_threshold:float) -> tuple:
     best_allele = None
     best_quality = 0.0
@@ -102,7 +113,27 @@ def call_hla_alleles(hla_alleles_by_sample:pd.DataFrame, quality_threshold:float
     motif_posession_by_subject["quality_threshold"] = quality_threshold
     return motif_posession_by_subject
 
-def format_and_export(hla_allele_calls:pd.DataFrame, output_filename:str, output_dir:str):
+def compute_frequency_stats(hla_allele_calls:pd.DataFrame) -> pd.DataFrame:
+    
+    all_hla_alleles = ["A1", "A2", "B1", "B2", "C1", "C2"]
+    all_hla_alleles = [hla_allele_calls[key].dropna().values for key in all_hla_alleles]
+    all_hla_alleles = np.hstack(all_hla_alleles)
+    desired_hla_alleles = np.unique(all_hla_alleles)
+
+    frequencies = {key:0.0 for key in desired_hla_alleles}
+
+    for allele_name in all_hla_alleles:
+        frequencies[allele_name] +=1/(hla_allele_calls.shape[0]*2)
+
+    for allele_name in frequencies:
+         frequencies[allele_name] = 1 - (1.0-frequencies[allele_name])**2
+    
+    frequencies = pd.DataFrame([frequencies]).iloc[0].sort_values(ascending=False)
+    frequencies.name = "phenotype_frequency"
+    frequencies.index.name = "hla_allele"
+    return frequencies
+
+def format_and_export(hla_allele_calls:pd.DataFrame, hla_frequencies:pd.DataFrame, output_filename:str, output_dir:str):
     hla_genes = ["A1", "A2", "B1", "B2", "C1", "C2"]
 
     for column_key in hla_genes:
@@ -121,23 +152,32 @@ def format_and_export(hla_allele_calls:pd.DataFrame, output_filename:str, output
     columns = [key.lower() for key in columns]
     hla_allele_calls = pd.DataFrame(hla_allele_calls.values, columns=columns)
 
+    # Export HLA Allele Calls
     output_filename = os.path.join(output_dir, output_filename)
     hla_allele_calls.to_csv(output_filename)
 
     print(hla_allele_calls)
+
+    # Export Frequencies
+    output_filename = "hla_phenotype_frequencies.csv"
+    output_filename = os.path.join(output_dir, output_filename)
+    hla_frequencies.to_csv(output_filename)
+    print("hla Population Frequencies:")
+    print(hla_frequencies)
 
 def main():
     args = parse_arguments()
     os.makedirs(args["output_dir"], exist_ok=True)
 
     # Import Consolidated Results
-    optitype_hla_results = pd.read_parquet(args["input_file"])
+    optitype_hla_results = import_tabular_file(args["input_file"])
 
     # Compute HLA Variant Calls
     hla_allele_calls = call_hla_alleles(optitype_hla_results, args["quality_threshold"])
+    hla_frequencies = compute_frequency_stats(hla_allele_calls)
 
     # Format And Export
-    format_and_export(hla_allele_calls, args["output_filename"], args["output_dir"])
+    format_and_export(hla_allele_calls, hla_frequencies, args["output_filename"], args["output_dir"])
 
 print("Starting...")
 main()

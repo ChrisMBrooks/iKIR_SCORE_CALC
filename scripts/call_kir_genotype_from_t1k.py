@@ -59,6 +59,17 @@ def parse_arguments() -> dict:
     arguments = vars(parser.parse_args())
     return arguments
 
+def import_tabular_file(filename:str, index_col:int = None) -> pd.DataFrame:
+    file_extension = filename.split(".")[-1]
+    if file_extension == "parquet":
+        frame = pd.read_parquet(filename)
+        return frame
+    elif file_extension == "csv":
+        frame = pd.read_csv(filename, index_col=index_col)
+        return frame
+    else:
+        raise Exception("File type not recognised. Please us parquet or csv.")
+
 def get_genotype_call_from_tech_reps(
     kir_gene_subset:pd.DataFrame, 
     tech_rep_quality_threshold:float
@@ -147,8 +158,6 @@ def main():
     args = parse_arguments()
     os.makedirs(args["output_dir"], exist_ok=True)
 
-    input_filename = ".vscode/test_data/wustl_t1k_kir_consolidation.parquet"
-
     # Declare Constants
     required_kir_genes = [
         "kir2dl1", "kir2dl2", "kir2dl3", "kir3dl1", 
@@ -156,7 +165,7 @@ def main():
     ]
 
     # Import Data
-    raw_t1k_kir_results = pd.read_parquet(args["input_file"])
+    raw_t1k_kir_results = import_tabular_file(args["input_file"])
 
     # Perform KIR typing across patients for all technical replicates
     kir_genotype_calls = call_kir_genotypes_from_gex(

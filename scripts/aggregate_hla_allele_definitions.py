@@ -51,6 +51,36 @@ def load_json(filename:str) -> dict:
         payload = json.loads(raw_text)
     return payload
 
+def import_tabular_file(filename:str, index_col:int = None) -> pd.DataFrame:
+    file_extension = filename.split(".")[-1]
+    if file_extension == "parquet":
+        frame = pd.read_parquet(filename)
+        return frame
+    elif file_extension == "csv":
+        frame = pd.read_csv(filename, index_col=index_col)
+        return frame
+    else:
+        raise Exception("File type not recognised. Please us parquet or csv.")
+
+def format_to_longform_hla_nomenclature(hla_imp_data:pd.DataFrame):
+
+    longform_hla_alleles = []
+    for index, row in hla_imp_data.iterrows():
+        hla_gene = row["locus"].replace("HLA", "")
+        short_code = str(row["imputedType"])
+
+        if not short_code:
+            hla_allele = None
+        elif len(short_code) < 4:
+            hla_allele = "{0}*0{1}:{2}".format(hla_gene, short_code[0], short_code[1:])
+        else:
+            hla_allele = "{0}*{1}:{2}".format(hla_gene, short_code[0:2], short_code[2:])
+        
+        longform_hla_alleles.append(hla_allele)
+
+    hla_imp_data["hla_allele"] = longform_hla_alleles
+    return hla_imp_data
+            
 def format_hla_allele_name(allele_tuple:list) -> str:
     short_code_prefix = str(int(allele_tuple[1]))
 
@@ -125,14 +155,15 @@ def get_signal_peptide_length(ebi_id:str) -> int:
 
 def get_unique_hla_alleles(hla_alleles:pd.DataFrame) -> list:
 
-    hla_alleles = np.unique(hla_alleles["hla_allele"].dropna())
+    if "imputedType" in hla_alleles.columns:
+        hla_alleles = format_to_longform_hla_nomenclature(hla_alleles)
 
+    hla_alleles = np.unique(hla_alleles["hla_allele"].dropna())
     unique_allele_tuples = []
     for hla_allele in hla_alleles:
         star_pieces = hla_allele.split("*")
         colon_pieces = star_pieces[1].split(":")
         unique_allele_tuples.append([star_pieces[0].upper(), colon_pieces[0], colon_pieces[1]])
-
     return unique_allele_tuples
 
 def is_conventional_allele(ebi_name:str) -> bool:
@@ -176,13 +207,17 @@ def compute_motif_posession(
         criterea = motif_definitions[key]
         motif_status[key] = True
         for critereon in criterea:
-            amino_acid = protein_sequence[critereon[0]-1+offset]
-            condition = amino_acid in critereon[1]
-            if not condition:
+            if len(protein_sequence) < critereon[0] + offset:
                 motif_status[key] = False
                 break
-            else: 
-                pass
+            else:
+                amino_acid = protein_sequence[critereon[0]-1+offset]
+                condition = amino_acid in critereon[1]
+                if not condition:
+                    motif_status[key] = False
+                    break
+                else: 
+                    pass
     return motif_status
 
 def retrieve_hla_meta_data_from_ipd(alleles, motif_definitions:dict) -> pd.DataFrame:
@@ -197,18 +232,17 @@ def retrieve_hla_meta_data_from_ipd(alleles, motif_definitions:dict) -> pd.DataF
         )
 
         # Compute Motif Posession
-        protein_sequence = ebi_record[4]
-        signal_peptide_len = ebi_record[5]
-        motif_posession_statuses = compute_motif_posession(
-            protein_sequence, 
-            motif_definitions = motif_definitions, 
-            offset = signal_peptide_len
-        )
-
-        ebi_record = ebi_record + [motif_posession_statuses[key] for key in motif_definitions]
-
-        if ebi_record:
+        if ebi_record and ebi_record[4] and ebi_record[5]: 
+            protein_sequence = ebi_record[4]
+            signal_peptide_len = ebi_record[5]
+            motif_posession_statuses = compute_motif_posession(
+                protein_sequence, 
+                motif_definitions = motif_definitions, 
+                offset = signal_peptide_len
+            )
+            ebi_record = ebi_record + [motif_posession_statuses[key] for key in motif_definitions]
             records.append(ebi_record)
+            
         else:
             print("Failed to find record for {}".format(allele_tuple))
             ebi_record = [allele_tuple[0], "{0}{1}".format(allele_tuple[1],allele_tuple[2]), allele_name]
@@ -236,21 +270,21 @@ def format_and_export(hla_allele_records:pd.DataFrame, failed_records:pd.DataFra
         print("Some HLA alleles could not be reconciled against the ipd. Details are reported in the failed_records.csv file.")
         output_filename = os.path.join(output_dir, "failed_records.csv")
         failed_records.to_csv(output_filename)
-
+    
 def main():
     args = parse_arguments()
     os.makedirs(args["output_dir"], exist_ok=True)
 
     # Import Data
     motif_definitions = load_json("ref_data/hla_ligand_motif_definitions.json")
-    hla_allele_typing = pd.read_parquet(args["input_file"])
+    hla_allele_typing = import_tabular_file(args["input_file"])
 
     # Format Input Data
-    alleles = get_unique_hla_alleles(hla_allele_typing)
+    unique_hla_alleles = get_unique_hla_alleles(hla_allele_typing)
 
     # Retrieve Meta Data from IPD
     hla_allele_records, failed_records = retrieve_hla_meta_data_from_ipd(
-        alleles = alleles, 
+        alleles = unique_hla_alleles, 
         motif_definitions = motif_definitions
     )
 

@@ -115,14 +115,14 @@ An example JSON is provided below:
 An example of an imputations.csv file from HLA*IMP03:
 
 |ID_1       |ID_2      |haplotypeID|locus|imputedType|posteriorProbability|
-|-----------|----------|-----------|-----|-----------|--------------------|
+|:-----------:|:----------:|:-----------:|:-----:|:-----------:|:--------------------:|
 |subject_xyz|sample_abc|hap.1.1    |HLAA |0201       |0.99                |
 |subject_xyz|sample_abc|hap.1.2    |HLAA |1101       |1                   |
 
 An example of an imputations.csv file from KIR*IMP:
 
 |ID_1       |ID_2      |haplotypeID|locus|imputedType|posteriorProbability|
-|-----------|----------|-----------|-----|-----------|--------------------|
+|:-----------:|:----------:|:-----------:|:-----:|:-----------:|:--------------------:|
 |subject_xyz|sample_abc|hap.472.1  |KIR2DL1|1          |0.999               |
 |subject_xyz|sample_abc|hap.472.2  |KIR2DL1|1          |0.999               |
 

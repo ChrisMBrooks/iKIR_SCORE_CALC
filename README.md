@@ -128,7 +128,7 @@ subject_xyz,sample_abc,hap.472.1,KIR2DL1,1,0.999
 subject_xyz,sample_abc,hap.472.2,KIR2DL1,1,0.999
 ```
 
-An example of a consolidated T1K T1K file:
+An example of a consolidated T1K KIR results file (flattened):
 
 ```csv
 subject_id,sample_id,kir_gene,allele_count,abundance,quality_score
@@ -138,10 +138,10 @@ subject_xyz,sample_abc,KIR2DL3,2,366.609129,60
 subject_xyz,sample_abc,KIR2DL4,2,14.783743,6
 ```
 
-An example of a consolidated Optitype HLA file:
+An example of a consolidated Optitype HLA file (flattened):
 
 ```csv
-subject_id,sample_id,hla_gene,hla_allele ,quality_score
+subject_id,sample_id,hla_gene,hla_allele,quality_score
 subject_xyz,sample_abc,A1,A*23:01,46.0
 subject_xyz,sample_abc,A2,A*23:01,46.0
 ```

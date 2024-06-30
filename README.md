@@ -41,7 +41,7 @@ Three main input files must be configured or be made available before the pipeli
 * ``imputations.csv`` file from KIR*IMP
 * ``imputations.csv`` file from HLA*IMP:03
 
-# Input (scRNA-Seq Typing)
+# Alternative Input (scRNA-Seq Typing)
 
 The pipeline also supports iKIR Scoring from scRNA-Seq data via the outputs from the [TENX_2_KIR_HLA](https://github.com/ChrisMBrooks/TENX_2_KIR_HLA) pipeline. The following files are required to run the pipeline in this configuration. 
 * ``pipeline.config.json`` configuration files

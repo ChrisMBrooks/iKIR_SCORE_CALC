@@ -114,34 +114,31 @@ An example JSON is provided below:
 
 An example of an imputations.csv file from HLA*IMP03:
 
-```csv
-ID_1,ID_2,haplotypeID,locus,imputedType,posteriorProbability
-subject_xyz,sample_abc,hap.1.1,HLAA,0201,0.99
-subject_xyz,sample_abc,hap.1.2,HLAA,1101,1
-```
+|ID_1       |ID_2      |haplotypeID|locus|imputedType|posteriorProbability|
+|-----------|----------|-----------|-----|-----------|--------------------|
+|subject_xyz|sample_abc|hap.1.1    |HLAA |0201       |0.99                |
+|subject_xyz|sample_abc|hap.1.2    |HLAA |1101       |1                   |
 
 An example of an imputations.csv file from KIR*IMP:
 
-```csv
-ID_1,ID_2,haplotypeID,locus,imputedType,posteriorProbability
-subject_xyz,sample_abc,hap.472.1,KIR2DL1,1,0.999
-subject_xyz,sample_abc,hap.472.2,KIR2DL1,1,0.999
-```
+|ID_1       |ID_2      |haplotypeID|locus|imputedType|posteriorProbability|
+|-----------|----------|-----------|-----|-----------|--------------------|
+|subject_xyz|sample_abc|hap.472.1  |KIR2DL1|1          |0.999               |
+|subject_xyz|sample_abc|hap.472.2  |KIR2DL1|1          |0.999               |
 
 An example of a consolidated T1K KIR results file (flattened):
 
-```csv
-subject_id,sample_id,kir_gene,allele_count,abundance,quality_score
-subject_xyz,sample_abc,KIR2DL1,2,249.030129,60
-subject_xyz,sample_abc,KIR2DL2,0,0.0,-1
-subject_xyz,sample_abc,KIR2DL3,2,366.609129,60
-subject_xyz,sample_abc,KIR2DL4,2,14.783743,6
-```
+|subject_id |sample_id |kir_gene|allele_count|abundance |quality_score|
+|:-----------:|:----------:|:--------:|:------------:|:----------:|:-------------:|
+|subject_xyz|sample_abc|KIR2DL1 |2           |249.030129|60           |
+|subject_xyz|sample_abc|KIR2DL2 |0           |0.0       |-1           |
+|subject_xyz|sample_abc|KIR2DL3 |2           |366.609129|60           |
+|subject_xyz|sample_abc|KIR2DL4 |2           |14.783743 |6            |
 
 An example of a consolidated Optitype HLA file (flattened):
 
 | subject_id | sample_id | hla_gene | hla_allele | quality_score
-| --- | --- | --- | --- | --- 
+| :---: | :---: | :---: | :---: | :---: 
 | subject_xyz | sample_abc | A1 | A*23:01 | 46.0
 | subject_xyz | sample_abc | A2 | A*23:01 | 46.0
 

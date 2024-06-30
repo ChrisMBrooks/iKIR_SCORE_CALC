@@ -243,10 +243,12 @@ def compute_functional_ikir_stats(genotype_information:pd.DataFrame, kir_ligand_
 
 def format_and_export(genotype_information:pd.DataFrame, output_filename:str, output_dir:str):
     
+    item_to_move_to_front  = ["subject_id", "func_ikir_score", "func_ikir_count", "ikir_count"] 
     columns = list(genotype_information.columns)
-    columns.remove("subject_id")
+    for key in item_to_move_to_front:
+        columns.remove(key)
 
-    columns = ["subject_id"] + sorted(columns)
+    columns = item_to_move_to_front + sorted(columns)
     genotype_information = genotype_information[columns]
     columns = [column_name.lower() for column_name in columns]
     genotype_information = pd.DataFrame(genotype_information.values, columns=columns)

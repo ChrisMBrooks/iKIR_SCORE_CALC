@@ -112,21 +112,21 @@ An example JSON is provided below:
 }
 ```
 
-An example of an imputations.csv file from HLA*IMP03:
+An example of an imputations.csv file from **HLA*IMP03**:
 
 |ID_1       |ID_2      |haplotypeID|locus|imputedType|posteriorProbability|
 |:-----------:|:----------:|:-----------:|:-----:|:-----------:|:--------------------:|
 |subject_xyz|sample_abc|hap.1.1    |HLAA |0201       |0.99                |
 |subject_xyz|sample_abc|hap.1.2    |HLAA |1101       |1                   |
 
-An example of an imputations.csv file from KIR*IMP:
+An example of an imputations.csv file from **KIR*IMP**:
 
 |ID_1       |ID_2      |haplotypeID|locus|imputedType|posteriorProbability|
 |:-----------:|:----------:|:-----------:|:-----:|:-----------:|:--------------------:|
 |subject_xyz|sample_abc|hap.472.1  |KIR2DL1|1          |0.999               |
 |subject_xyz|sample_abc|hap.472.2  |KIR2DL1|1          |0.999               |
 
-An example of a consolidated T1K KIR results file (flattened):
+An example of a consolidated **T1K KIR** results file (flattened):
 
 |subject_id |sample_id |kir_gene|allele_count|abundance |quality_score|
 |:-----------:|:----------:|:--------:|:------------:|:----------:|:-------------:|
@@ -135,7 +135,7 @@ An example of a consolidated T1K KIR results file (flattened):
 |subject_xyz|sample_abc|KIR2DL3 |2           |366.609129|60           |
 |subject_xyz|sample_abc|KIR2DL4 |2           |14.783743 |6            |
 
-An example of a consolidated Optitype HLA file (flattened):
+An example of a consolidated **Optitype HLA** file (flattened):
 
 | subject_id | sample_id | hla_gene | hla_allele | quality_score
 | :---: | :---: | :---: | :---: | :---: 

@@ -115,9 +115,10 @@ The results file, ``functional_ikir_scoring.csv``, can be found in the ``outputs
 
 * ``func_ikir_score`` a value from 1 to 4 as float. 
 * ``func_ikir_count`` a value from 1 to 4 as float. 
-• ``ikir_count`` a value 1 to 4 as float. 
+* ``ikir_count`` a value 1 to 4 as float. 
 * Functional KIR posession values, e.g.: ``func_kir2dl1``, ``func_kir2dl2``, ``func_kir2dl3``, ``func_kir3dl1`` as booleans.
 * HLA ligang posession values, e.g.: ``hla_a_23_bw4``, ``hla_a_24_bw4``, ``hla_a_32_bw4``, ``hla_b_46_c1``, ``hla_b_73_c1``, ``hla_b_bw4``, ``hla_c_c1``, ``hla_c_c2`` as booleans
 
 > NB 1 - The ``func_ikir_score`` is calculated as per [Boelen et al., 2018](https://doi.org/10.1126/sciimmunol.aao2892).
+
 > NB 2 - Ligand motif posession is calculated by first retrieving the relvant HLA protein sequence and signal peptide length from the [IPD](https://www.ebi.ac.uk/ipd/imgt/hla/) and then applying the motif as described in ``ref_data/hla_ligand_motif_definitions.json``. 

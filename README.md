@@ -6,7 +6,7 @@
 
 # Workflow Overview
 
-![Pipeline Workflow info](./Docs/rule-graph.png)
+![Pipeline Workflow info](./docs/rule-graph.png)
 
 # Table of Contents
 1. [Setup](#setup)

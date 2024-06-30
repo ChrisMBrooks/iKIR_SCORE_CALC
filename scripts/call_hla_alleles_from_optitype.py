@@ -145,7 +145,6 @@ def format_and_export(hla_allele_calls:pd.DataFrame, hla_frequencies:pd.DataFram
         columns.remove(column_key)
     columns.remove("subject_id")
     columns.remove("quality_threshold")
-    print(columns)
 
     columns = ["subject_id", "quality_threshold"] + sorted(columns)
     hla_allele_calls = hla_allele_calls[columns]

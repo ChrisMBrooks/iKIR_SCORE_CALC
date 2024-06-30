@@ -45,8 +45,12 @@ Three main input files must be configured or be made available before the pipeli
 
 The pipeline also supports iKIR Scoring from scRNA-Seq data via the outputs from the [TENX_2_KIR_HLA](https://github.com/ChrisMBrooks/TENX_2_KIR_HLA) pipeline. The following files are required to run the pipeline in this configuration. 
 * ``pipeline.config.json`` configuration files
-* ``kir_genotyping_results.csv`` file from T1K. This is a consolidation ``csv`` file of raw T1K results with ``subject_id`` and ``sample_id`` as the primary and secondary keys for each record. NB ``.parquet`` file format is also support. 
-* ``hla_geneotyping_results.csv`` file from Optitype HLA. This is a consolidation ``csv`` file of raw Optitype HLA results with ``subject_id`` and ``sample_id`` as the primary and secondary keys for each record. NB ``.parquet`` file format is also support. 
+
+* ``kir_genotyping_results.csv`` file from T1K. This is a consolidation ``csv`` file of raw T1K results with ``subject_id`` and ``sample_id`` as the primary and secondary keys for each record. Mandatory columns: ``subject_id``, ``sample_id``, ``kir_gene``, ``allele_count``, ``quality_score``. 
+
+* ``hla_geneotyping_results.csv`` file from Optitype HLA. This is a consolidation ``csv`` file of raw Optitype HLA results with ``subject_id`` and ``sample_id`` as the primary and secondary keys for each record. Mandatory columns: ``subject_id``, ``sample_id``, ``hla_gene``, ``hla_allele``. 
+
+> NB ``.parquet`` file format is also supported in place of ``csv``.
 
 ## Pipeline Config JSON
 
@@ -56,7 +60,11 @@ The ``pipeline.config.json`` file is a simple high level JSON file containing co
 
 *  ``["hla_allele_calling"]["raw_input_filenames"]`` is the filename for the consolidated Optitype HLA results as discussed above. 
 
+*  ``["hla_allele_calling"]["source"]`` is the source type for the above input file, either ``hla_imp`` or ``optitype``.
+
 *  ``["kir_genotype_calling"]["raw_input_filenames"]`` is the filename for the consolidated T1K KIR results as discussed above. 
+
+*  ``["kir_genotype_calling"]["source"]`` is the source type for the above input file, either ``kir_imp`` or ``t1k``.
 
 Configuration parameters for the ``t1k_calling``, ``optitype_calling``, ``kir_imp_calling``, and ``hla_imp_calling`` rules can be adjusted as required using the following parameters: 
 
@@ -102,6 +110,40 @@ An example JSON is provided below:
         }
     }
 }
+```
+
+An example of an imputations.csv file from HLA*IMP03:
+
+```csv
+ID_1,ID_2,haplotypeID,locus,imputedType,posteriorProbability
+subject_xyz,sample_abc,hap.1.1,HLAA,0201,0.99
+subject_xyz,sample_abc,hap.1.2,HLAA,1101,1
+```
+
+An example of an imputations.csv file from KIR*IMP:
+
+```csv
+ID_1,ID_2,haplotypeID,locus,imputedType,posteriorProbability
+subject_xyz,sample_abc,hap.472.1,KIR2DL1,1,0.999
+subject_xyz,sample_abc,hap.472.2,KIR2DL1,1,0.999
+```
+
+An example of a consolidated T1K T1K file:
+
+```csv
+subject_id,sample_id,kir_gene,allele_count,abundance,quality_score
+subject_xyz,sample_abc,KIR2DL1,2,249.030129,60
+subject_xyz,sample_abc,KIR2DL2,0,0.0,-1
+subject_xyz,sample_abc,KIR2DL3,2,366.609129,60
+subject_xyz,sample_abc,KIR2DL4,2,14.783743,6
+```
+
+An example of a consolidated Optitype HLA file:
+
+```csv
+subject_id,sample_id,hla_gene,hla_allele ,quality_score
+subject_xyz,sample_abc,A1,A*23:01,46.0
+subject_xyz,sample_abc,A2,A*23:01,46.0
 ```
 
 # Run

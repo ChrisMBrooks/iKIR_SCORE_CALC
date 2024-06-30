@@ -14,7 +14,7 @@
     },
     "rule_config":{
         "t1k_calling":{
-            "name":"T1K",
+            "name":"t1k",
             "p_val_quality_threshold":0.1,
             "tech_rep_quality_threshold":0.5
         },

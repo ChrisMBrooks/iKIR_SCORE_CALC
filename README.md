@@ -1,5 +1,5 @@
 # iKIR_SCORE_CALC
-## _A Snakemake Pipeline to Calculate the functional iKIR score from [KIR*IMP](https://imp.science.unimelb.edu.au/kir/) and [HLA*IMP](https://imp.science.unimelb.edu.au/hla/) imputation results._ 
+## _A Snakemake Pipeline to Calculate the [Functional iKIR Score](https://doi.org/10.1126/sciimmunol.aao2892) from [KIR*IMP](https://imp.science.unimelb.edu.au/kir/) and [HLA*IMP](https://imp.science.unimelb.edu.au/hla/) imputation results._ 
 > The pipeline also supports [T1K (KIR)](https://doi.org/10.1101/gr.277585.122) [OptitypeHLA](https://doi.org/10.1093/bioinformatics/btu548) variant calling results from scRNA-Seq.
 
 ## Authors

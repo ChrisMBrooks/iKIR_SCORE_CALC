@@ -140,11 +140,10 @@ subject_xyz,sample_abc,KIR2DL4,2,14.783743,6
 
 An example of a consolidated Optitype HLA file (flattened):
 
-```csv
-subject_id,sample_id,hla_gene,hla_allele,quality_score
-subject_xyz,sample_abc,A1,A*23:01,46.0
-subject_xyz,sample_abc,A2,A*23:01,46.0
-```
+| subject_id | sample_id | hla_gene | hla_allele | quality_score
+| --- | --- | --- | --- | --- 
+| subject_xyz | sample_abc | A1 | A*23:01 | 46.0
+| subject_xyz | sample_abc | A2 | A*23:01 | 46.0
 
 # Run
 To run the pipeline, first activate the snakemake conda environment, ``snakemake_env`` and then run the following command:  

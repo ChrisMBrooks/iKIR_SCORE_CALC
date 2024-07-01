@@ -174,6 +174,6 @@ The results file, ``functional_ikir_scoring.csv``, can be found in the ``outputs
 |KIR3DL1 |HLA-B     |BW4  |1                             |
 |KIR3DL1 |HLA-A+    |BW4  |1                             |
 
-> \+ KIR3DL1 + ligand HLA-A 23 24 or 32 w/ BW4
+> \+ A special case with KIR3DL1 paired with the ligand HLA-A:23, 24 or 32 also w/ the BW4 motif.
 
 > NB 2 - Ligand motif posession is calculated by first retrieving the relvant HLA protein sequence and signal peptide length from the [IPD](https://www.ebi.ac.uk/ipd/imgt/hla/) and then verifying motif posession using the appropriate defintions as described in ``ref_data/hla_ligand_motif_definitions.json``. 

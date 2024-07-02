@@ -109,7 +109,7 @@ def call_kir_genotypes_from_gex(
 
     records = []
     for subject_id in np.unique(raw_kir_from_gex["subject_id"]):
-        record = {key:np.NaN for key in required_kir_genes}
+        record = {key:np.nan for key in required_kir_genes}
         subject_subset = mod_kir_from_gex[mod_kir_from_gex["subject_id"] == subject_id]
         for kir_gene in required_kir_genes:
             kir_gene_subset = subject_subset[subject_subset["kir_gene"].str.lower() == kir_gene].copy()

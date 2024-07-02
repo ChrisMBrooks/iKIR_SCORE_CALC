@@ -1,3 +1,4 @@
+# snakemake --cores 8 --use-conda --conda-frontend conda --printshellcmds
 # snakemake --cores 8 --use-conda --conda-frontend conda --rerun-incomplete
 # snakemake --cores 8 --use-conda --conda-frontend conda --dry-run --printshellcmds
 # snakemake --cores 8 --use-conda --conda-frontend conda --keep-incomplete

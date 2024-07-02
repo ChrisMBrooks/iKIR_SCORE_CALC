@@ -105,10 +105,11 @@ def call_kir_genotypes_from_gex(
     mod_kir_from_gex = raw_kir_from_gex.copy()
     mod_kir_from_gex["quality_score"] = mod_kir_from_gex["quality_score"].astype(object)
     mod_kir_from_gex.loc[mod_kir_from_gex["allele_count"].astype(int) == 0, "quality_score"] = 60
-    mod_kir_from_gex.loc[mod_kir_from_gex["quality_score"].astype(float) <= pvalue_quality_threshold, "allele_count"] = None
+    mod_kir_from_gex.loc[mod_kir_from_gex["quality_score"].astype(float) <= pvalue_quality_threshold, "allele_count"] = 0.0
 
     records = []
-    for subject_id in np.unique(raw_kir_from_gex["subject_id"]):
+    unique_subjects = np.unique(raw_kir_from_gex["subject_id"])
+    for subject_id in unique_subjects:
         record = {key:np.nan for key in required_kir_genes}
         subject_subset = mod_kir_from_gex[mod_kir_from_gex["subject_id"] == subject_id]
         for kir_gene in required_kir_genes:
